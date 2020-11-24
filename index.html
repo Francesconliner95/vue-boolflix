@@ -20,10 +20,26 @@
                         <img :src="'https://image.tmdb.org/t/p/original' + item.poster_path" alt="">
                     </div>
                     <div class="bottom">
-                        <p>{{item.title}}</p>
-                        <p>{{item.original_title}}</p>
-                        <p>{{item.original_language}}</p>
+
+                        <p v-if="item.title!=undefined">{{item.title}}</p>
+                        <p v-else>{{item.name}}</p>
+
+                        <p  v-if="item.original_title!=undefined">{{item.original_title}}</p>
+                        <p v-else>{{item.original_name}}</p>
+
+                        <div class="flags" v-if="flags_array.includes(item.original_language)">
+                            <img :src=" 'img/flags/' + item.original_language + '-flag.png'" alt="">
+                        </div>
+                        <p v-else>{{item.original_language}}</p>
                         <p>{{item.vote_average}}</p>
+                        <div class="stars">
+                            <i :class="Math.floor((item.vote_average / 10)*5)>=1? 'fas': 'far'" class="fa-star"></i>
+                            <i :class="Math.floor((item.vote_average / 10)*5)>=2? 'fas': 'far'" class="fa-star"></i>
+                            <i :class="Math.floor((item.vote_average / 10)*5)>=3? 'fas': 'far'" class="fa-star"></i>
+                            <i :class="Math.floor((item.vote_average / 10)*5)>=4? 'fas': 'far'" class="fa-star"></i>
+                            <i :class="Math.floor((item.vote_average / 10)*5)>=5? 'fas': 'far'" class="fa-star"></i>
+                        </div>
+                        <!-- <p>{{Math.floor((item.vote_average / 10)*5)}}</p> -->
                     </div>
                 </div>
             </main>

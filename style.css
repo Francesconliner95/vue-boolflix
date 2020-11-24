@@ -40,6 +40,7 @@ main{
     height: 260px;
     background-color: #19e68c;
     margin: 15px;
+    text-align: center;
 }
 
 .top{
@@ -83,4 +84,17 @@ p:nth-child(2) {
 
 p:nth-child(n+3) {
     font-size: 12px;
+}
+
+.stars>i{
+    color: yellow;
+}
+
+.flags{
+
+}
+
+.flags>img{
+    width:16px;
+    height: 10px;
 }
