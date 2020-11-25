@@ -12,16 +12,34 @@
         <div id=root>
             <header>
                 <div class="container">
-                    <input @keyup.enter="search()" type="text" name="" value="" v-model="search_text" placeholder="   Inserisci film o serie tv...">
-                    <i class="fas fa-search" @click="search()"></i>
-                    <!-- <button @click="search()" type="button" name="button">Invia</button> -->
+                    <div class="header-left">
+                        <h1>BOOLFIX</h1>
+                    </div>
+                    <div class="header-right">
+                        <input @keyup.enter="search()" type="text" name="" value="" v-model="search_text" placeholder="   Inserisci film o serie tv...">
+                        <i class="fas fa-search" @click="search()"></i>
+                    </div>
                 </div>
             </header>
             <main>
+                <!-- <div class="in-research">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div> -->
+                <h2 v-if="research_in_progress">Ricerca in corso</h2>
+                <h2 v-if="search_array.length>0">Risultati ricerca per la parola "{{word}}"</h2>
+                <h2 v-else-if="word!='' && !research_in_progress">Nessun risultato trovato per la parola "{{word}}"</h2>
                 <div class="container">
                     <div class="item" v-for="item in search_array">
                         <div class="top">
-                            <img :src="'https://image.tmdb.org/t/p/original' + item.poster_path" alt="">
+                            <img v-if="item.poster_path!=null" :src="'https://image.tmdb.org/t/p/'+ 'w154' + item.poster_path" alt="">
+                            <img v-else src="https://www.tutelaminoriunife.it/tm/wp-content/uploads/2013/06/copertina-non-disponibile.jpg" alt="">
                         </div>
                         <div class="bottom">
 
@@ -34,7 +52,9 @@
                             <div class="flags" v-if="flags_array.includes(item.original_language)">
                                 <img :src=" 'img/flags/' + item.original_language + '-flag.png'" alt="">
                             </div>
-                            <p v-else>{{item.original_language}}</p>
+                            <div v-else class="lenguage">
+                                <p>{{item.original_language}}</p>
+                            </div>
                             <!-- <p>{{item.vote_average}}</p> -->
                             <div class="stars">
                                 <i :class="Math.floor((item.vote_average / 10)*5)>=1? 'fas': 'far'" class="fa-star"></i>
@@ -44,6 +64,8 @@
                                 <i :class="Math.floor((item.vote_average / 10)*5)>=5? 'fas': 'far'" class="fa-star"></i>
                             </div>
                             <!-- <p>{{Math.floor((item.vote_average / 10)*5)}}</p> -->
+                            <p><strong>Overview:</strong>
+                            <marquee behavior="scroll" direction="up" scrollamount="1">{{item.overview}}</marquee></p>
                         </div>
                     </div>
                 </div>
