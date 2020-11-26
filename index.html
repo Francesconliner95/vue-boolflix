@@ -11,13 +11,21 @@
     <body>
         <div id=root>
             <header>
+                <!-- <button @click="getCast" type="button" name="button">prova</button> -->
                 <div class="container">
                     <div class="header-left">
                         <h1>BOOLFIX</h1>
                     </div>
+                    <div class="categories">
+                        <select name="categories" id="categories_input" v-model="categories" @change="auto_select_refresh()">
+                            <option>All Categories</option>
+                            <option>TVshow</option>
+                            <option>Movie</option>
+                        </select>
+                    </div>
                     <div class="header-right">
-                        <input @keyup.enter="search()" type="text" name="" value="" v-model="search_text" placeholder="   Inserisci film o serie tv...">
-                        <i class="fas fa-search" @click="search()"></i>
+                        <input @keyup.enter="search_enter()" type="text" name="" value="" v-model="search_text" placeholder="   Inserisci film o serie tv...">
+                        <i class="fas fa-search" @click="search_enter()"></i>
                     </div>
                 </div>
             </header>
@@ -57,15 +65,15 @@
                             </div>
                             <!-- <p>{{item.vote_average}}</p> -->
                             <div class="stars">
-                                <i :class="Math.floor((item.vote_average / 10)*5)>=1? 'fas': 'far'" class="fa-star"></i>
-                                <i :class="Math.floor((item.vote_average / 10)*5)>=2? 'fas': 'far'" class="fa-star"></i>
-                                <i :class="Math.floor((item.vote_average / 10)*5)>=3? 'fas': 'far'" class="fa-star"></i>
-                                <i :class="Math.floor((item.vote_average / 10)*5)>=4? 'fas': 'far'" class="fa-star"></i>
-                                <i :class="Math.floor((item.vote_average / 10)*5)>=5? 'fas': 'far'" class="fa-star"></i>
+                                <i v-for="i in 5":class="Math.floor((item.vote_average / 10)*5)>=i+1? 'fas': 'far'" class="fa-star"></i>
+
                             </div>
                             <!-- <p>{{Math.floor((item.vote_average / 10)*5)}}</p> -->
-                            <p><strong>Overview:</strong>
-                            <marquee behavior="scroll" direction="up" scrollamount="1">{{item.overview}}</marquee></p>
+                            <!-- <p class="actors">{{}}</p> -->
+
+                            <p class="overview"><strong>Overview:</strong>
+                            <marquee  direction="up" scrollamount="1">{{item.overview}}</marquee>
+                            </p>
                         </div>
                     </div>
                 </div>

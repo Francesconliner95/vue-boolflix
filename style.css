@@ -42,8 +42,17 @@ h1{
     color: red;
 }
 
-.categories{
-    width: 300px;
+
+select{
+    width: 150px;
+    height: 30px;
+    border-radius: 15px;
+    background-color: rgba(165,165,177, .5);
+    color: rgba(0, 0, 0, 0.8);
+}
+
+select:focus{
+    outline: none;
 }
 
 header input{
@@ -188,14 +197,19 @@ p:nth-child(3) {
     height: 20px;
 }
 
-p:nth-child(5) {
+.overview{
     font-size: 11px;
     text-align: left;
-    padding-top:5px;    
+    padding-top:5px;
+    display: none;
+}
+
+.item:hover .overview{
+    display: block;
 }
 
 marquee{
-    height: 165px;
+    height: 140px;
 }
 .stars>i{
     color: yellow;
