@@ -108,9 +108,13 @@ var app = new Vue({
         },
 
         mouseOver(index){
+            var category='movie';
             if (!app.isOver) {
                 app.isOver=true;
-                axios.get('https://api.themoviedb.org/3/movie/'+ app.search_array[index].id +'/credits',{
+                if(app.search_array[index].title!=undefined){
+                    category='tv';
+                }
+                axios.get('https://api.themoviedb.org/3/'+ category +'/'+ app.search_array[index].id +'/credits',{
                            params:{
                                api_key: '4a1844d0c1312fb56c1a5f50c104b224',
                            }
@@ -131,6 +135,7 @@ var app = new Vue({
 
                 }
                 console.log(app.genre);
+                console.log('tipo:' + category);
             }
         },
 
