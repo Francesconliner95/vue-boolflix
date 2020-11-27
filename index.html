@@ -29,16 +29,9 @@
                 </div>
             </header>
             <main>
-                <!-- <div class="in-research">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div> -->
+                <div v-if="research_in_progress" class="in-research">
+                    <span v-for="i in 7"></span>
+                </div>
                 <h2 v-if="research_in_progress">Ricerca in corso</h2>
                 <h2 v-if="search_array.length>0">Risultati ricerca per la parola "{{word}}"</h2>
                 <h2 v-else-if="word!='' && !research_in_progress">Nessun risultato trovato per la parola "{{word}}"</h2>
