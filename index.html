@@ -11,10 +11,9 @@
     <body>
         <div id=root>
             <header>
-                <!-- <button @click="getCast" type="button" name="button">prova</button> -->
                 <div class="container">
                     <div class="header-left">
-                        <h1>BOOLFIX</h1>
+                        <h1 @click="home_reset()">BOOLFIX</h1>
                     </div>
                     <div class="categories">
                         <select name="categories" id="categories_input" v-model="categories" @change="auto_select_refresh()">
@@ -44,7 +43,7 @@
                 <h2 v-if="search_array.length>0">Risultati ricerca per la parola "{{word}}"</h2>
                 <h2 v-else-if="word!='' && !research_in_progress">Nessun risultato trovato per la parola "{{word}}"</h2>
                 <div class="container">
-                    <div class="item" v-for="item in search_array">
+                    <div class="item" v-for="(item,index) in search_array" @mouseover="mouseOver(index)" @mouseleave="mouseLeave(index)">
                         <div class="top">
                             <img v-if="item.poster_path!=null" :src="'https://image.tmdb.org/t/p/'+ 'w154' + item.poster_path" alt="">
                             <img v-else src="https://www.tutelaminoriunife.it/tm/wp-content/uploads/2013/06/copertina-non-disponibile.jpg" alt="">
@@ -68,8 +67,14 @@
                                 <i v-for="i in 5":class="Math.floor((item.vote_average / 10)*5)>=i+1? 'fas': 'far'" class="fa-star"></i>
 
                             </div>
-                            <!-- <p>{{Math.floor((item.vote_average / 10)*5)}}</p> -->
-                            <!-- <p class="actors">{{}}</p> -->
+
+                            <p class="actors"><strong>Actors:</strong>
+                                <span class="actor" v-for="actor in actors">{{actor.name}}, </span>
+                            </p>
+
+                            <p class="actors"><strong>Genre:</strong>
+                                <span class="actor" v-for="element in genre">{{element}}, </span>
+                            </p>
 
                             <p class="overview"><strong>Overview:</strong>
                             <marquee  direction="up" scrollamount="1">{{item.overview}}</marquee>

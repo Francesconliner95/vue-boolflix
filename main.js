@@ -6,9 +6,11 @@ var app = new Vue({
         research_in_progress: false,
         search_array: [],
         flags_array:['en', 'it', 'jp', 'es', 'fr'],
-        array: [],
-        main_array: [],
+        actors: [],
         categories: 'All Categories',
+        genre_list: [],
+        genre: [],
+        isOver: false,
         },
     methods: {
         search_enter(){
@@ -25,22 +27,24 @@ var app = new Vue({
             this.search();
         },
 
+        home_reset(){
+            this.search_text = '';
+            this.word = '';
+            this.search_array=[];
+        },
+
         search(){
             switch(this.categories) {
               case 'All Categories':
-                console.log('tutti');
                 this.searchMovies_TvShow();
                 break;
               case 'TVshow':
                 this.searchTvShow();
-                console.log('serie');
                 break;
               case 'Movie':
-                console.log('film');
                 this.searchMovies();
                 break;
               default:
-                console.log('tutti');
                 this.searchMovies_TvShow();
             }
         },
@@ -51,9 +55,9 @@ var app = new Vue({
                 app.search_array=[];
                 this.getMovies();
                 this.getSeries();
-                console.log(app.search_array);
                 app.word=app.search_text;
                 app.search_text= '';
+                console.log(app.search_array);
             }
         },
 
@@ -62,7 +66,6 @@ var app = new Vue({
                 app.research_in_progress=true;
                 app.search_array=[];
                 this.getMovies();
-                console.log(app.search_array);
                 app.word=app.search_text;
                 app.search_text= '';
             }
@@ -73,7 +76,6 @@ var app = new Vue({
                 app.research_in_progress=true;
                 app.search_array=[];
                 this.getSeries();
-                console.log(app.search_array);
                 app.word=app.search_text;
                 app.search_text= '';
             }
@@ -105,35 +107,58 @@ var app = new Vue({
                });
         },
 
-        getCast(){
-            var can_enter=true;
-            var main_array=[];
-            for (var i = 0; i < app.search_array.length; i++) {
-                app.search_array[i].actors_name=[];
-                axios.get('https://api.themoviedb.org/3/movie/'+ app.search_array[i].id +'/credits',{
+        mouseOver(index){
+            if (!app.isOver) {
+                app.isOver=true;
+                axios.get('https://api.themoviedb.org/3/movie/'+ app.search_array[index].id +'/credits',{
                            params:{
                                api_key: '4a1844d0c1312fb56c1a5f50c104b224',
                            }
                        }
                     ).then(function(actors) {
-                        app.array=actors.data.cast.slice(0, 5);
-                        app.main_array.push(app.array);
-                        console.log(app.main_array);
+                        app.actors=actors.data.cast.slice(0, 5);
                     });
-                // app.array[5]='spazio';
-                console.log(app.search_array[i].actors_name.length);
-                console.log(i);
+                // app.search_array[index].genre_ids[]
+                app.genre=[];
+                for (var i = 0; i < app.search_array[index].genre_ids.length; i++) {
+                    for (var j = 0; j < app.genre_list.length; j++) {
+                        if(app.search_array[index].genre_ids[i]==app.genre_list[j].id){
+                            if(!app.genre.includes(app.genre_list[j].name)){
+                                app.genre.push(app.genre_list[j].name);
+                            }
+                        }
+                    }
+
+                }
+                console.log(app.genre);
             }
-            // do {
-            //     if (app.main_array.length==app.search_array.length) {
-            //         console.log('finito');
-            //     }
-            // } while (app.main_array.length<app.search_array.length);
         },
+
+        mouseLeave(){
+            app.isOver=false;
+        }
 
     },
 
     mounted: function(){
+        axios.get('https://api.themoviedb.org/3/genre/movie/list',{
+                   params:{
+                       api_key: '4a1844d0c1312fb56c1a5f50c104b224',
+                   }
+               }
+           ).then(function(genMovie) {
+                app.genre_list.push(...genMovie.data.genres);
+            });
+
+        axios.get('https://api.themoviedb.org/3/genre/tv/list',{
+                   params:{
+                       api_key: '4a1844d0c1312fb56c1a5f50c104b224',
+                   }
+               }
+           ).then(function(genTV) {
+                app.genre_list.push(...genTV.data.genres);
+                console.log(app.genre_list);
+            });
 
     },
 
